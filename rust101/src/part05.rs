@@ -135,6 +135,8 @@ impl ops::Add<BigInt> for BigInt {
     }
 }
 
+// Iter
+
 pub struct Iter<'a> {
     nums: &'a Vec<u64>,
     idx: usize,
@@ -147,14 +149,14 @@ impl BigInt {
 }
 
 impl<'a> Iterator for Iter<'a> {
-    type Item = u64;
+    type Item = &'a u64;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.idx == 0 {
             None
         } else {
             self.idx = self.idx - 1;
-            Some(self.nums[self.idx])
+            Some(&self.nums[self.idx])
         }
     }
 }
@@ -165,6 +167,25 @@ mod tests {
     use super::Minimum;
     use super::overflowing_add;
     use super::vec_min;
+
+    #[test]
+    fn test_iter() {
+        let vec: Vec<u64> = vec![8,4,0,5];
+        let v2 = BigInt::from_vec(&vec![8,4,0,5,0,0,0]);
+        for (b, v) in v2.iter().zip(vec.iter().rev()) {
+            assert_eq!(b, v);
+        }
+    }
+
+    #[test]
+    fn iter() {
+        let v2 = BigInt::from_vec(&vec![8,4,0,5]);
+        let mut iter = v2.iter();
+        assert_eq!(iter.next(), Some(&5));
+        assert_eq!(iter.next(), Some(&0));
+        assert_eq!(iter.next(), Some(&4));
+        assert_eq!(iter.next(), Some(&8));
+    }
 
     #[test]
     fn test_counts() {
@@ -207,14 +228,5 @@ mod tests {
 
         assert_eq!(&b1 + &b2, BigInt::from_vec(&vec![500, 1]));
         assert_eq!(b1 + b2, BigInt::from_vec(&vec![500, 1]));
-    }
-
-    #[test]
-    fn test_iter() {
-        let vec: Vec<u64> = vec![8,4,0,5];
-        let v2 = BigInt::from_vec(&vec![8,4,0,5,0,0,0]);
-        for (b, v) in v2.iter().zip(vec.iter().rev()) {
-            assert_eq!(b, *v);
-        }
     }
 }
