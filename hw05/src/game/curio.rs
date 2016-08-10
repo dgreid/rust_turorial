@@ -7,6 +7,7 @@ const NUM_CURIO_VARIANTS: usize = 5;
 const NUM_NONRECURSIVE_CURIOS: usize = 3;
 
 #[derive(Clone)]
+#[derive(Debug)]
 pub enum Curio {
     Chest(i32),
     SpikeTrap(i32),

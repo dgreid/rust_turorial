@@ -28,12 +28,12 @@ pub fn game_loop(mut player: Player) {
             Ok(_) => {
                 let parse = parse_line(&buf);
                 if let Err(Error::Parse) = parse {
-                    println!("I do not know how to {}!", buf.trim());
+                    println!("I do not know how to parse {}!", buf.trim());
                 } else if let Err(Error::Quit) = parse {
                     break;
                 } else if let Ok(cmd) = parse {
                     if let Err(_) = player.act(cmd) {
-                        println!("I don't know how to {}!", buf.trim());
+                        println!("I don't know how to act on {}!", buf.trim());
                     }
                 }
                 if player.hp <= 0 {
