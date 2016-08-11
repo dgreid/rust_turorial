@@ -79,7 +79,7 @@ impl Board {
 		   return Err("Invalid room numbers per hall".to_string());
 	    }
 
-            let mut hall = Hall::new(self.rooms[r1_idx].clone(), self.rooms[r2_idx].clone());
+            let hall = Hall::new(self.rooms[r1_idx].clone(), self.rooms[r2_idx].clone());
 
             // Add hall links to rooms
 	    let hall_rc = Rc::new(hall);

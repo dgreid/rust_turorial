@@ -62,14 +62,19 @@ impl Player {
     pub fn act(&mut self, cmd: Command) -> Result<(), ()> {
 	match cmd {
 	    Command::Go(rname) => {
-		self.location = try!(self.find_room(rname));
+		let new_room = try!(self.find_room(rname));
+		for c in new_room.borrow().contents.iter() {
+                    self.use_curio(c.clone());
+		}
+		self.location = new_room.clone();
 		Ok(())
 	    },
 	    Command::Shoot(rname) => {
-		let mut room = try!(self.find_room(rname));
+		let room = try!(self.find_room(rname));
 		let mut room = room.borrow_mut();
 		if room.wumpus {
 		    room.wumpus = false;
+                    self.won = true;
 		}
 		Ok(())
 	    },
